@@ -7,7 +7,7 @@ import (
 type ProdService struct {
 }
 
-func (p *ProdService) GetProdStock(ctx context.Context, in *ProdRequest) (*ProdResponse, error) {
+func (p *ProdService) GetProdStock(ctx context.Context, req *ProdRequest) (*ProdResponse, error) {
 	return &ProdResponse{
 		ProdStock: 100,
 	}, nil
