@@ -7,7 +7,11 @@
 package services
 
 import (
+	context "context"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -128,8 +132,13 @@ var file_prod_proto_rawDesc = []byte{
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x70, 0x72, 0x6f, 0x64, 0x49, 0x64, 0x22, 0x2d,
 	0x0a, 0x0c, 0x50, 0x72, 0x6f, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1d,
 	0x0a, 0x0a, 0x70, 0x72, 0x6f, 0x64, 0x5f, 0x73, 0x74, 0x6f, 0x63, 0x6b, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x05, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x64, 0x53, 0x74, 0x6f, 0x63, 0x6b, 0x62, 0x06, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x28, 0x05, 0x52, 0x09, 0x70, 0x72, 0x6f, 0x64, 0x53, 0x74, 0x6f, 0x63, 0x6b, 0x32, 0x4c, 0x0a,
+	0x0b, 0x50, 0x72, 0x6f, 0x64, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3d, 0x0a, 0x0c,
+	0x47, 0x65, 0x74, 0x50, 0x72, 0x6f, 0x64, 0x53, 0x74, 0x6f, 0x63, 0x6b, 0x12, 0x15, 0x2e, 0x73,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x50, 0x72, 0x6f, 0x64, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x50,
+	0x72, 0x6f, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -150,8 +159,10 @@ var file_prod_proto_goTypes = []interface{}{
 	(*ProdResponse)(nil), // 1: services.ProdResponse
 }
 var file_prod_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
+	0, // 0: services.ProdService.GetProdStock:input_type -> services.ProdRequest
+	1, // 1: services.ProdService.GetProdStock:output_type -> services.ProdResponse
+	1, // [1:2] is the sub-list for method output_type
+	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -196,7 +207,7 @@ func file_prod_proto_init() {
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
-			NumServices:   0,
+			NumServices:   1,
 		},
 		GoTypes:           file_prod_proto_goTypes,
 		DependencyIndexes: file_prod_proto_depIdxs,
@@ -206,4 +217,84 @@ func file_prod_proto_init() {
 	file_prod_proto_rawDesc = nil
 	file_prod_proto_goTypes = nil
 	file_prod_proto_depIdxs = nil
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConnInterface
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion6
+
+// ProdServiceClient is the client API for ProdService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type ProdServiceClient interface {
+	GetProdStock(ctx context.Context, in *ProdRequest, opts ...grpc.CallOption) (*ProdResponse, error)
+}
+
+type prodServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewProdServiceClient(cc grpc.ClientConnInterface) ProdServiceClient {
+	return &prodServiceClient{cc}
+}
+
+func (c *prodServiceClient) GetProdStock(ctx context.Context, in *ProdRequest, opts ...grpc.CallOption) (*ProdResponse, error) {
+	out := new(ProdResponse)
+	err := c.cc.Invoke(ctx, "/services.ProdService/GetProdStock", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ProdServiceServer is the server API for ProdService service.
+type ProdServiceServer interface {
+	GetProdStock(context.Context, *ProdRequest) (*ProdResponse, error)
+}
+
+// UnimplementedProdServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedProdServiceServer struct {
+}
+
+func (*UnimplementedProdServiceServer) GetProdStock(context.Context, *ProdRequest) (*ProdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProdStock not implemented")
+}
+
+func RegisterProdServiceServer(s *grpc.Server, srv ProdServiceServer) {
+	s.RegisterService(&_ProdService_serviceDesc, srv)
+}
+
+func _ProdService_GetProdStock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProdServiceServer).GetProdStock(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/services.ProdService/GetProdStock",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProdServiceServer).GetProdStock(ctx, req.(*ProdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _ProdService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "services.ProdService",
+	HandlerType: (*ProdServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetProdStock",
+			Handler:    _ProdService_GetProdStock_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "prod.proto",
 }
