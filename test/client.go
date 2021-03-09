@@ -4,15 +4,15 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"grpc/services"
 	"io/ioutil"
 	"log"
-	"testing"
 )
 
-func TestGrpc(t *testing.T) {
+func main() {
 	certificate,err:=tls.LoadX509KeyPair("config/client.pem", "config/client.key")
 	if err!=nil {
 		log.Fatal(err)
@@ -32,14 +32,14 @@ func TestGrpc(t *testing.T) {
 
 	conn, err := grpc.Dial(":9000", grpc.WithTransportCredentials(creds))
 	if err != nil {
-		t.Error(err)
+		log.Fatal(err)
 	}
 	defer conn.Close()
 
 	prodClient := services.NewProdServiceClient(conn)
 	res, err := prodClient.GetProdStock(context.Background(), &services.ProdRequest{ProdId: 1})
 	if err != nil {
-		t.Error(err)
+		log.Fatal(err)
 	}
-	t.Log(res)
+	fmt.Println(res)
 }
