@@ -12,25 +12,27 @@ import (
 	"log"
 )
 
+// GODEBUG=x509ignoreCN=0 go run test/client.go
+
 func main() {
-	certificate,err:=tls.LoadX509KeyPair("config/client.pem", "config/client.key")
-	if err!=nil {
+	certificate, err := tls.LoadX509KeyPair("config/client.pem", "config/client.key")
+	if err != nil {
 		log.Fatal(err)
 	}
-	certPool:=x509.NewCertPool()
-	ca, err:=ioutil.ReadFile("config/ca.pem")
-	if err!=nil {
+	certPool := x509.NewCertPool()
+	ca, err := ioutil.ReadFile("config/ca.pem")
+	if err != nil {
 		log.Fatal(err)
 	}
 	certPool.AppendCertsFromPEM(ca)
 
-	creds:=credentials.NewTLS(&tls.Config{
+	creds := credentials.NewTLS(&tls.Config{
 		Certificates: []tls.Certificate{certificate},
 		RootCAs:      certPool,
 		ServerName:   "localhost",
 	})
 
-	conn, err := grpc.Dial(":9000", grpc.WithTransportCredentials(creds))
+	conn, err := grpc.Dial(":8081", grpc.WithTransportCredentials(creds))
 	if err != nil {
 		log.Fatal(err)
 	}
