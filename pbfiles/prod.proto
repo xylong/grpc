@@ -2,11 +2,13 @@ syntax="proto3";
 package services;
 
 import "google/api/annotations.proto";
+import "area.proto";
 
 option go_package="grpc/services";
 
 message ProdRequest {
   int32 prod_id=1;  // 传入的商品id
+  Area area=2;  // 商品区域
 }
 
 message ProdResponse {
