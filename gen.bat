@@ -1,0 +1,1 @@
+ protoc --proto_path=pbfiles --go_out=plugins=grpc:./../ prod.proto

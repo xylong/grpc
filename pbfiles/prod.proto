@@ -3,16 +3,35 @@ package services;
 
 import "google/api/annotations.proto";
 
+option go_package="grpc/services";
+
 message ProdRequest {
   int32 prod_id=1;  // 传入的商品id
 }
+
 message ProdResponse {
   int32 prod_stock=1; // 商品库存
 }
+
+message QuerySize {
+  int32 size=1;
+}
+
+// 商品列表返回
+message ProdResponseList {
+  repeated ProdResponse list=1;
+}
+
 service ProdService {
   rpc GetProdStock(ProdRequest) returns (ProdResponse) {
     option (google.api.http)={
       get:"/v1/prod/{prod_id}"
+    };
+  }
+
+  rpc GetProdStocks(QuerySize) returns (ProdResponseList) {
+    option (google.api.http)={
+      get:"/v1/products"
     };
   }
 }

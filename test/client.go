@@ -39,9 +39,21 @@ func main() {
 	defer conn.Close()
 
 	prodClient := services.NewProdServiceClient(conn)
-	res, err := prodClient.GetProdStock(context.Background(), &services.ProdRequest{ProdId: 1})
+	testGetMultiple(prodClient)
+}
+
+func testGetOne(client services.ProdServiceClient)  {
+	res, err := client.GetProdStock(context.Background(), &services.ProdRequest{ProdId: 1})
 	if err != nil {
 		log.Fatal(err)
+	}
+	fmt.Println(res)
+}
+
+func testGetMultiple(client services.ProdServiceClient)  {
+	res,err :=client.GetProdStocks(context.Background(),&services.QuerySize{Size: 10})
+	if err!=nil {
+		log.Fatalln(err)
 	}
 	fmt.Println(res)
 }
