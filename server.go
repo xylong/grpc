@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"google.golang.org/grpc"
 	"grpc/helper"
+	"grpc/pbfiles"
 	"grpc/services"
 	"net"
 )
 
 func main() {
 	rpcServer := grpc.NewServer(grpc.Creds(helper.GetServerCreds()))
-	services.RegisterProdServiceServer(rpcServer, new(services.ProdService))
+	pbfiles.RegisterProdServiceServer(rpcServer, new(services.ProdService))
+	//services.RegisterProdServiceServer(rpcServer, new(services.ProdService))
 
 	listener, err := net.Listen("tcp", ":8081")
 	if err != nil {

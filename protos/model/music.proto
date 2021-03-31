@@ -1,0 +1,21 @@
+syntax="proto3";
+
+package model;
+
+option go_package="grpc/pbfiles";
+
+// 音乐类型
+enum Type {
+  Classical=0;  // 古典
+  Popular=1;  // 流行
+}
+
+// 音乐
+message Music {
+  int32 id=1; // id
+  Type type=2;  // 类型
+  string name=3;  // 名字
+  float price=4;  // 价格
+  string author=5;  // 作者
+}
+

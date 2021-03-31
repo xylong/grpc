@@ -6,6 +6,8 @@ import (
 	"google.golang.org/grpc/credentials"
 	"io/ioutil"
 	"log"
+	"math/rand"
+	"time"
 )
 
 // GetServerCreds 获取服务端证书配置
@@ -48,4 +50,14 @@ func GetClientCreds() credentials.TransportCredentials {
 		RootCAs:      certPool,
 		ServerName:   "localhost",
 	})
+}
+
+func GetRandomInt(n int) int {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(n)
+}
+
+func GetRandomFloat(n int) float32 {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Float32()
 }

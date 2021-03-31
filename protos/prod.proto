@@ -3,8 +3,9 @@ package services;
 
 import "google/api/annotations.proto";
 import "area.proto";
+import "model/music.proto";
 
-option go_package="grpc/services";
+option go_package="grpc/pbfiles";
 
 message ProdRequest {
   int32 prod_id=1;  // 传入的商品id
@@ -34,6 +35,13 @@ service ProdService {
   rpc GetProdStocks(QuerySize) returns (ProdResponseList) {
     option (google.api.http)={
       get:"/v1/products"
+    };
+  }
+
+  // music包名不同，才用model.Music引入
+  rpc GetProdInfo(ProdRequest) returns (model.Music) {
+    option (google.api.http)={
+      get:"/v1/musics/{prod_id}"
     };
   }
 }

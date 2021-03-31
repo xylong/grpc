@@ -5,7 +5,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 	"grpc/helper"
-	"grpc/services"
+	"grpc/pbfiles"
 	"log"
 	"net/http"
 )
@@ -14,7 +14,7 @@ import (
 func main() {
 	gwMux := runtime.NewServeMux()
 	opt := []grpc.DialOption{grpc.WithTransportCredentials(helper.GetClientCreds())}
-	if err := services.RegisterProdServiceHandlerFromEndpoint(context.Background(), gwMux, "localhost:8081", opt); err != nil {
+	if err := pbfiles.RegisterProdServiceHandlerFromEndpoint(context.Background(), gwMux, "localhost:8081", opt); err != nil {
 		log.Fatal(err)
 	}
 

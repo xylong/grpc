@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"grpc/services"
+	"grpc/pbfiles"
 	"io/ioutil"
 	"log"
 )
@@ -38,13 +38,14 @@ func main() {
 	}
 	defer conn.Close()
 
-	prodClient := services.NewProdServiceClient(conn)
-	testGetOne(prodClient)
+	prodClient := pbfiles.NewProdServiceClient(conn)
+	//testGetOne(prodClient)
 	//testGetMultiple(prodClient)
+	testGetMusicInfo(prodClient)
 }
 
-func testGetOne(client services.ProdServiceClient) {
-	res, err := client.GetProdStock(context.Background(), &services.ProdRequest{
+func testGetOne(client pbfiles.ProdServiceClient) {
+	res, err := client.GetProdStock(context.Background(), &pbfiles.ProdRequest{
 		ProdId: 1,
 		//Area:   services.Area_C,
 		Area: -1,
@@ -55,8 +56,18 @@ func testGetOne(client services.ProdServiceClient) {
 	fmt.Println(res)
 }
 
-func testGetMultiple(client services.ProdServiceClient) {
-	res, err := client.GetProdStocks(context.Background(), &services.QuerySize{Size: 10})
+func testGetMultiple(client pbfiles.ProdServiceClient) {
+	res, err := client.GetProdStocks(context.Background(), &pbfiles.QuerySize{Size: 10})
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(res)
+}
+
+func testGetMusicInfo(client pbfiles.ProdServiceClient) {
+	res, err := client.GetProdInfo(context.Background(), &pbfiles.ProdRequest{
+		ProdId: 1,
+	})
 	if err != nil {
 		log.Fatalln(err)
 	}

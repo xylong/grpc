@@ -1,6 +1,6 @@
 syntax="proto3";
 
-option go_package="grpc/services";
+option go_package="grpc/pbfiles";
 
 enum Area {
   A=0;
