@@ -4,14 +4,13 @@ import (
 	"context"
 	"fmt"
 	"grpc/pbfiles"
-	"grpc/pbfiles/model"
 )
 
 type OrderService struct {
 }
 
-func (s *OrderService) NewOrder(ctx context.Context, order *model.Order) (*pbfiles.OrderResponse, error) {
-	fmt.Println(order)
+func (s *OrderService) NewOrder(ctx context.Context, request *pbfiles.OrderRequest) (*pbfiles.OrderResponse, error) {
+	fmt.Println(request.Order)
 	return &pbfiles.OrderResponse{
 		Status:  "ok",
 		Message: "success",

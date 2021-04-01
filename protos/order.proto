@@ -4,7 +4,12 @@ package services;
 
 option go_package="grpc/pbfiles";
 
+import "google/api/annotations.proto";
 import "model/order.proto";
+
+message OrderRequest {
+  model.Order order = 1;
+}
 
 message OrderResponse {
   string status = 1;
@@ -12,5 +17,10 @@ message OrderResponse {
 }
 
 service OrderService {
-  rpc NewOrder(model.Order) returns (OrderResponse) {}
+  rpc NewOrder(OrderRequest) returns (OrderResponse) {
+    option (google.api.http)={
+      post: "/v1/orders"
+      body: "order"
+    };
+  }
 }

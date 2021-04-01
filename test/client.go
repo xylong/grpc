@@ -81,13 +81,12 @@ func testGetMusicInfo(client pbfiles.ProdServiceClient) {
 }
 
 func testNewOrder(client pbfiles.OrderServiceClient) {
-	if res, err := client.NewOrder(context.Background(), &model.Order{
-		Id:        1,
+	if res, err := client.NewOrder(context.Background(), &pbfiles.OrderRequest{Order: &model.Order{
 		No:        "123456789",
 		UserId:    9527,
 		Price:     3.5,
 		CreatedAt: &timestamp.Timestamp{Seconds: time.Now().Unix()},
-	}); err != nil {
+	}}); err != nil {
 		log.Fatalln(err.Error())
 	} else {
 		fmt.Println(res)

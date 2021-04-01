@@ -13,8 +13,14 @@ import (
 // GODEBUG=x509ignoreCN=0 go run httpServer.go
 func main() {
 	gwMux := runtime.NewServeMux()
+	endPoint := "localhost:8081"
 	opt := []grpc.DialOption{grpc.WithTransportCredentials(helper.GetClientCreds())}
-	if err := pbfiles.RegisterProdServiceHandlerFromEndpoint(context.Background(), gwMux, "localhost:8081", opt); err != nil {
+	// prod
+	if err := pbfiles.RegisterProdServiceHandlerFromEndpoint(context.Background(), gwMux, endPoint, opt); err != nil {
+		log.Fatal(err)
+	}
+	// order
+	if err := pbfiles.RegisterOrderServiceHandlerFromEndpoint(context.Background(), gwMux, endPoint, opt); err != nil {
 		log.Fatal(err)
 	}
 
