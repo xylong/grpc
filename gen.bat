@@ -1,4 +1,4 @@
- protoc --proto_path=protos --go_out=plugins=grpc:./../ protos/model/*.proto
+ protoc --proto_path=protos --go_out=plugins=grpc:./../ --validate_out=lang=go:./../ protos/model/*.proto
  protoc --proto_path=protos --go_out=plugins=grpc:./../ protos/*.proto
 
 ::gateway

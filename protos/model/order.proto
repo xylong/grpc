@@ -5,13 +5,14 @@ package model;
 option go_package="grpc/pbfiles/model";
 
 import "google/protobuf/timestamp.proto";
+import "validate.proto";
 
 // 订单
 message Order {
   int32 id = 1; // 订单id
   string no = 2;  // 订单号
   int32 user_id = 3;  // 买家
-  float price = 4;  // 价格
+  float price = 4[(validate.rules).float.gt=0];  // 价格
   google.protobuf.Timestamp created_at=5; // 购买时间
   repeated OrderDetail detail = 6;
 }
