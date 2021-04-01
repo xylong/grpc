@@ -5,11 +5,14 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
+	"github.com/golang/protobuf/ptypes/timestamp"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"grpc/pbfiles"
+	"grpc/pbfiles/model"
 	"io/ioutil"
 	"log"
+	"time"
 )
 
 // GODEBUG=x509ignoreCN=0 go run test/client.go
@@ -38,10 +41,13 @@ func main() {
 	}
 	defer conn.Close()
 
-	prodClient := pbfiles.NewProdServiceClient(conn)
+	//prodClient := pbfiles.NewProdServiceClient(conn)
 	//testGetOne(prodClient)
 	//testGetMultiple(prodClient)
-	testGetMusicInfo(prodClient)
+	//testGetMusicInfo(prodClient)
+
+	orderClient := pbfiles.NewOrderServiceClient(conn)
+	testNewOrder(orderClient)
 }
 
 func testGetOne(client pbfiles.ProdServiceClient) {
@@ -72,4 +78,18 @@ func testGetMusicInfo(client pbfiles.ProdServiceClient) {
 		log.Fatalln(err)
 	}
 	fmt.Println(res)
+}
+
+func testNewOrder(client pbfiles.OrderServiceClient) {
+	if res, err := client.NewOrder(context.Background(), &model.Order{
+		Id:        1,
+		No:        "123456789",
+		UserId:    9527,
+		Price:     3.5,
+		CreatedAt: &timestamp.Timestamp{Seconds: time.Now().Unix()},
+	}); err != nil {
+		log.Fatalln(err.Error())
+	} else {
+		fmt.Println(res)
+	}
 }
