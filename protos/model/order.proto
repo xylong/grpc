@@ -13,4 +13,12 @@ message Order {
   int32 user_id = 3;  // 买家
   float price = 4;  // 价格
   google.protobuf.Timestamp created_at=5; // 购买时间
+  repeated OrderDetail detail = 6;
+}
+
+// 子订单
+message OrderDetail {
+  int32 detail_id = 1;
+  string order_no = 2;
+  int32 num = 3;
 }
